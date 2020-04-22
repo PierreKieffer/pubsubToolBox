@@ -10,7 +10,7 @@ var exit = make(chan bool)
 func main() {
 
 	// Init message buffer to receive pulled messages
-	var buffer = consumer.InitBuffer(1)
+	var buffer = consumer.InitBuffer(10)
 
 	// Launch local buffer consumer to process messages
 	go ProcessBuffer(buffer)
