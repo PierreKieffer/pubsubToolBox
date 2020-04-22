@@ -7,10 +7,11 @@ Google Cloud Platform Pub/Sub toolbox
 - GCP root package "cloud.google.com/go" 
 
 
-## Usage 
-
+## Usage
+ 
+```bash
 go get github.com/PierreKieffer/pubsubToolBox
-
+```
 
 ### Producer 
 To publish messages : 
