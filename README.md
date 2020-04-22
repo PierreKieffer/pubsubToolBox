@@ -17,7 +17,7 @@ To publish messages :
 
 ```go
 import (
-        "pubsubToolBox/producer"
+        "github.com/PierreKieffer/pubsubToolBox/producer"
 )
 ```
 
