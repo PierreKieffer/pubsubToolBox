@@ -48,6 +48,8 @@ The initialization takes the size of the buffer as a parameter :
 var buffer = consumer.InitBuffer(1)
 ```
 
+Once the message is consumed, it is dropped from the buffer. 
+
 Consume messages from Pub/Sub broker : 
 
 If the subscriber doesn't exist, it will be created. 
