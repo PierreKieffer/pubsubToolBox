@@ -35,7 +35,6 @@ import (
         "github.com/PierreKieffer/pubsubToolBox/consumer"
 )
 ```
-
 A message buffer must be instantiated in order to store messages at the application level.
 
 The consumer.Pull method receives messages from the Pub/Sub broker and adds them to the message buffer.
@@ -45,10 +44,10 @@ This allows consumption of the Pub/Sub broker and processing of messages in para
 The initialization takes the size of the buffer as a parameter :
 
 ```go 
-var buffer = consumer.InitBuffer(1)
+var buffer = consumer.InitBuffer(10)
 ```
 
-Once the message is consumed, it is dropped from the buffer. 
+Once a message is consumed, it is dropped from the buffer. 
 
 Consume messages from Pub/Sub broker : 
 
