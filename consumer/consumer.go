@@ -36,7 +36,7 @@ func Pull(projectID, subName, topicID, credFile string, buffer chan string) {
 
 	err = sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 		buffer <- string(msg.Data)
-		log.Println("INFO : pubsub.Pull : Message received and pushed to buffer")
+		log.Println("INFO : consumer.Pull : Message received and pushed to buffer")
 		msg.Ack()
 	})
 	if err != nil {
