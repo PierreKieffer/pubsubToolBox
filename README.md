@@ -4,7 +4,7 @@ Google Cloud Platform Pub/Sub toolbox
 ## Prerequisities 
 - GCP project with a Pub/Sub up & running. 
 - GCP service account and the credential file _private_key.json_ associated.
-- GCP root package "cloud.google.com/go" (```bash go get -u cloud.google.com/go/pubsub```) 
+- GCP root package "cloud.google.com/go" (```go get -u cloud.google.com/go/pubsub```) 
 
 
 ## Usage
