@@ -13,24 +13,25 @@ func InitBuffer(bufferSize int) chan string {
 	return buffer
 }
 
-func Pull(projectID, subName, topicID, credFile string, buffer chan string) {
-	ctx := context.Background()
-	client, err := pubsub.NewClient(ctx, projectID, option.WithCredentialsFile(credFile))
+func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID string, buffer chan string) error {
 	if err != nil {
-		log.Println("pubsub.NewClient: %v", err)
+		log.Println("ERROR : consumer.Pull : " + err.Error())
+		return err
 	}
 
-	topic := client.Topic(topicID)
+	topic := pubsubClient.Topic(topicID)
 
 	// Create topic subscription if it does not yet exist.
-	sub := client.Subscription(subName)
+	sub := pubsubClient.Subscription(subName)
 	exists, err := sub.Exists(ctx)
 	if err != nil {
-		log.Println("Error checking for subscription: %v", err)
+		log.Println("ERROR : consumer.Pull : " + err.Error())
+		return err
 	}
 	if !exists {
-		if _, err = client.CreateSubscription(ctx, subName, pubsub.SubscriptionConfig{Topic: topic}); err != nil {
-			log.Println("Failed to create subscription: %v", err)
+		if _, err = pubsubClient.CreateSubscription(ctx, subName, pubsub.SubscriptionConfig{Topic: topic}); err != nil {
+			log.Println("ERROR : consumer.Pull : " + err.Error())
+			return err
 		}
 	}
 
@@ -40,6 +41,8 @@ func Pull(projectID, subName, topicID, credFile string, buffer chan string) {
 		msg.Ack()
 	})
 	if err != nil {
-		log.Println("ERROR : pull : %v", err)
+		log.Println("ERROR : consumer.Pull : " + err.Error())
+		return err
 	}
+	return nil
 }
