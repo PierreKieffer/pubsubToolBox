@@ -13,28 +13,57 @@ Google Cloud Platform Pub/Sub toolbox
 go get github.com/PierreKieffer/pubsubToolBox
 ```
 
-### Producer 
+### Publisher 
 To publish messages : 
 
 ```go
 import (
-        "github.com/PierreKieffer/pubsubToolBox/producer"
+        "context"
+        "github.com/PierreKieffer/pubsubToolBox/client"
+        "github.com/PierreKieffer/pubsubToolBox/publisher"
+        "log"
 )
-```
 
-```go
+func main() {
+        ctx := context.Background()
+
+        projectID := "PROJECT_ID"
+        topicID := "TOPIC_ID"
+
+        pubsubClient, err := client.InitPubSubClient(ctx, projectID, "private_key.json")
+        if err != nil {
+                log.Println(err)
+        }
+
         message := `{"Message" : "Hello world"}`
-        producer.Publish("PROJECT_ID", "TOPIC_NAME", "private_key.json", message)
+        publisher.Publish(ctx, pubsubClient, topicID, message)
+
+}
 
 ```
+
 
 ### Consumer 
 To consume messages : 
 
 ```go
 import (
+        "context"
+        "github.com/PierreKieffer/pubsubToolBox/client"
         "github.com/PierreKieffer/pubsubToolBox/consumer"
+        "log"
 )
+
+ctx := context.Background()
+
+        projectID := "PROJECT_ID"
+        topicID := "TOPIC_ID"
+        subscriberName := "SUBSCRIBER_NAME"
+
+        pubsubClient, err:= client.InitPubSubClient(ctx, projectID, "private_key.json")
+        if err != nil {
+                log.Println(err)
+        }
 ```
 A message buffer must be instantiated in order to store messages at the application level.
 
@@ -55,7 +84,7 @@ Consume messages from Pub/Sub broker :
 If the subscriber doesn't exist, it will be created. 
 
 ```go 
-go consumer.Pull("PROJECT_ID", "SUBSCRIBER_NAME", "TOPIC_NAME", "private_key.json", buffer)
+go consumer.Pull(ctx, pubsubClient, subscriberName, topicID, buffer)
 
 ```
 The message buffer is a classic channel, It can be consumed through a goroutine : 
@@ -64,6 +93,8 @@ The message buffer is a classic channel, It can be consumed through a goroutine 
 package main
 
 import (
+        "context"
+        "github.com/PierreKieffer/pubsubToolBox/client"
         "github.com/PierreKieffer/pubsubToolBox/consumer"
         "log"
 )
@@ -72,14 +103,22 @@ var exit = make(chan bool)
 
 func main() {
 
-        // Init message buffer to receive pulled messages 
+        ctx := context.Background()
+
+        projectID := "PROJECT_ID"
+        topicID := "TOPIC_ID"
+        subscriberName := "SUBSCRIBER_NAME"
+
+        pubsubClient, _ := client.InitPubSubClient(ctx, projectID, "private_key.json")
+
+        // Init message buffer to receive pulled messages
         var buffer = consumer.InitBuffer(10)
 
-        // Launch the message buffer consumer to process messages 
+        // Launch local buffer consumer to process messages
         go ProcessBuffer(buffer)
 
-        // Launch the pubsub consumer to pull messages 
-	go consumer.Pull("PROJECT_ID", "SUBSCRIBER_NAME", "TOPIC_NAME", "private_key.json", buffer)
+        // Launch the pubsub consumer to pull messages
+        go consumer.Pull(ctx, pubsubClient, subscriberName, topicID, buffer)
 
         <-exit
 
@@ -91,6 +130,7 @@ func ProcessBuffer(messageBuffer chan string) {
                 log.Println("Message consumed : ", <-messageBuffer)
         }
 }
+
 ```
 
 

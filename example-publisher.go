@@ -3,15 +3,15 @@ package main
 import (
 	"context"
 	"github.com/PierreKieffer/pubsubToolBox/client"
-	"github.com/PierreKieffer/pubsubToolBox/producer"
+	"github.com/PierreKieffer/pubsubToolBox/publisher"
 	"log"
 )
 
 func main() {
 	ctx := context.Background()
 
-	projectID := "ai-datalake"
-	topicID := "testTopic"
+	projectID := "PROJECT_ID"
+	topicID := "TOPIC_ID"
 
 	pubsubClient, err := client.InitPubSubClient(ctx, projectID, "private_key.json")
 	if err != nil {
@@ -19,6 +19,6 @@ func main() {
 	}
 
 	message := `{"Message" : "Hello world"}`
-	producer.Publish(ctx, pubsubClient, topicID, message)
+	publisher.Publish(ctx, pubsubClient, topicID, message)
 
 }

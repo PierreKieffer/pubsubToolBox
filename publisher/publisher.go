@@ -2,7 +2,6 @@ package publisher
 
 import (
 	"context"
-	"google.golang.org/api/option"
 	"log"
 
 	"cloud.google.com/go/pubsub"

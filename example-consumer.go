@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/PierreKieffer/pubsubToolBox/client"
 	"github.com/PierreKieffer/pubsubToolBox/consumer"
 	"log"
@@ -12,11 +13,11 @@ func main() {
 
 	ctx := context.Background()
 
-	projectID := "ai-datalake"
-	topicID := "testTopic"
-	subscriberName := "ludo-test"
+	projectID := "PROJECT_ID"
+	topicID := "TOPIC_ID"
+	subscriberName := "SUBSCRIBER_NAME"
 
-	pubsubClient, err := client.InitPubSubClient(ctx, projectID, "private_key.json")
+	pubsubClient, _ := client.InitPubSubClient(ctx, projectID, "private_key.json")
 
 	// Init message buffer to receive pulled messages
 	var buffer = consumer.InitBuffer(10)

@@ -2,7 +2,6 @@ package consumer
 
 import (
 	"context"
-	"google.golang.org/api/option"
 	"log"
 
 	"cloud.google.com/go/pubsub"
@@ -14,10 +13,6 @@ func InitBuffer(bufferSize int) chan string {
 }
 
 func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID string, buffer chan string) error {
-	if err != nil {
-		log.Println("ERROR : consumer.Pull : " + err.Error())
-		return err
-	}
 
 	topic := pubsubClient.Topic(topicID)
 
