@@ -13,9 +13,9 @@ func main() {
 
 	ctx := context.Background()
 
-	projectID := "PROJECT_ID"
-	topicID := "TOPIC_ID"
-	subscriberName := "SUBSCRIBER_NAME"
+	projectID := "platform-hubstairs-test"
+	topicID := "airflow-trigger-notification"
+	subscriberName := "airflow-trigger-subscriber"
 
 	pubsubClient, _ := client.InitPubSubClient(ctx, projectID, "private_key.json")
 
