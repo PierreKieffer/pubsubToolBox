@@ -10,7 +10,7 @@ import (
 func InitPubSubClient(ctx context.Context, projectID string, credFile ...string) (*pubsub.Client, error) {
 
 	if len(credFile) > 0 {
-		client, err := pubsub.NewClient(ctx, projectID, option.WithCredentialsFile(credFile))
+		client, err := pubsub.NewClient(ctx, projectID, option.WithCredentialsFile(credFile[0]))
 		if err != nil {
 			log.Println("ERROR : client.InitPubSubClient : " + err.Error())
 			return nil, err
