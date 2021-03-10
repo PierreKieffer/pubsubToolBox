@@ -3,6 +3,7 @@ package consumer
 import (
 	"context"
 	"log"
+	"os"
 
 	"cloud.google.com/go/pubsub"
 )
@@ -21,11 +22,13 @@ func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID str
 	exists, err := sub.Exists(ctx)
 	if err != nil {
 		log.Println("ERROR : consumer.Pull : " + err.Error())
+		os.Exit(1)
 		return err
 	}
 	if !exists {
 		if _, err = pubsubClient.CreateSubscription(ctx, subName, pubsub.SubscriptionConfig{Topic: topic}); err != nil {
 			log.Println("ERROR : consumer.Pull : " + err.Error())
+			os.Exit(1)
 			return err
 		}
 	}
@@ -37,6 +40,7 @@ func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID str
 	})
 	if err != nil {
 		log.Println("ERROR : consumer.Pull : " + err.Error())
+		os.Exit(1)
 		return err
 	}
 	return nil
