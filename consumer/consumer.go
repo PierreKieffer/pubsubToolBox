@@ -13,7 +13,7 @@ func InitBuffer(bufferSize int) chan string {
 	return buffer
 }
 
-func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID string, buffer chan string) error {
+func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID string, buffer chan string) {
 
 	topic := pubsubClient.Topic(topicID)
 
@@ -23,13 +23,11 @@ func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID str
 	if err != nil {
 		log.Println("ERROR : consumer.Pull : " + err.Error())
 		os.Exit(1)
-		return err
 	}
 	if !exists {
 		if _, err = pubsubClient.CreateSubscription(ctx, subName, pubsub.SubscriptionConfig{Topic: topic}); err != nil {
 			log.Println("ERROR : consumer.Pull : " + err.Error())
 			os.Exit(1)
-			return err
 		}
 	}
 
@@ -41,7 +39,5 @@ func Pull(ctx context.Context, pubsubClient *pubsub.Client, subName, topicID str
 	if err != nil {
 		log.Println("ERROR : consumer.Pull : " + err.Error())
 		os.Exit(1)
-		return err
 	}
-	return nil
 }
