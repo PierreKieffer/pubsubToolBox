@@ -1,26 +1,33 @@
-package publisher
+package publisher                                                                                                                                                                                                                                                               
 
 import (
-	"context"
-	"log"
+        "context"
+        "log"
 
-	"cloud.google.com/go/pubsub"
+        "cloud.google.com/go/pubsub"
 )
 
-func Publish(ctx context.Context, pubsubClient *pubsub.Client, topicID, message string) error {
+type Publisher struct {
+        Context      context.Context
+        PubSubClient *pubsub.Client
+        TopicID      string
+}
 
-	t := pubsubClient.Topic(topicID)
+func (p *Publisher) Publish(message string, attributes map[string]string) error {
 
-	result := t.Publish(ctx, &pubsub.Message{
-		Data: []byte(message),
-	})
+        t := pubsubClient.Topic(p.TopicID)
 
-	id, err := result.Get(ctx)
-	if err != nil {
-		log.Println("ERROR : publisher.Publish : " + err.Error())
-		return err
-	}
+        result := t.Publish(ctx, &pubsub.Message{
+                Data:       []byte(message),
+                Attributes: attributes,
+        })  
 
-	log.Println("INFO : publisher.Publish : Message published : " + id)
-	return nil
+        id, err := result.Get(p.Context)
+        if err != nil {
+                log.Println("ERROR : publisher.Publish : " + err.Error())
+                return err 
+        }   
+
+        log.Println("INFO : publisher.Publish : Message published : " + id) 
+        return nil 
 }
