@@ -1,4 +1,4 @@
-package publisher                                                                                                                                                                                                                                                               
+package publisher
 
 import (
         "context"
@@ -15,9 +15,9 @@ type Publisher struct {
 
 func (p *Publisher) Publish(message string, attributes map[string]string) error {
 
-        t := pubsubClient.Topic(p.TopicID)
+        t := p.PubSubClient.Topic(p.TopicID)
 
-        result := t.Publish(ctx, &pubsub.Message{
+        result := t.Publish(p.Context, &pubsub.Message{                                                                                
                 Data:       []byte(message),
                 Attributes: attributes,
         })  
