@@ -31,26 +31,29 @@ import (
 )
 
 func main() {
-        ctx := context.Background()
 
         projectID := "PROJECT_ID"
-        topicID := "TOPIC_ID"
 
         // If GOOGLE_APPLICATION_CREDENTIALS is set :
         pubsubClient, err := client.InitPubSubClient(ctx, projectID)
 
         // Else you need to pass the json key                                                                         
         pubsubClient, err := client.InitPubSubClient(ctx, projectID, "private_key.json")
-
-
         if err != nil {
                 log.Println(err)
         }   
 
-        message := `{"Message" : "Hello world"}`
-        publisher.Publish(ctx, pubsubClient, topicID, message)
+	p := publisher.Publisher{
+		Context : context.Background(),
+		TopicID : "TOPIC_ID",
+		PubSubClient : pubsubClient
+	}
 
+        message := `{"Message" : "Hello world"}`
+	attributes := map[string]string{"foo" : "bar"}
+        p.Publish(message, attributes)
 }
+
 
 ```
 
